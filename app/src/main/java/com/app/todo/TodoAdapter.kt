@@ -10,7 +10,7 @@ import com.app.todo.data.Todo
 import kotlinx.android.synthetic.main.activity_todo_item.view.*
 
 class TodoAdapter(
-    private val todos: MutableList<Todo>
+    private val allTodos: MutableList<Todo>
 ) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
     class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -23,12 +23,12 @@ class TodoAdapter(
     }
 
     fun addTodo(todo: Todo) {
-        todos.add(todo)
-        notifyItemInserted(todos.size - 1)
+        allTodos.add(todo)
+        notifyItemInserted(allTodos.size - 1)
     }
 
     fun removeTodo() {
-        todos.removeAll { todo ->
+        allTodos.removeAll { todo ->
             todo.isChecked
         }
         notifyDataSetChanged()
@@ -36,14 +36,14 @@ class TodoAdapter(
 
     private fun toggleStrikeThrough(todoTitleTV: TextView, isChecked: Boolean) {
         if (isChecked) {
-            todoTitleTV.paintFlags = todoTitleTV.paintFlags or STRIKE_THRU_TEXT_FLAG
+            todoTitleTV.paintFlags = STRIKE_THRU_TEXT_FLAG
         } else {
-            todoTitleTV.paintFlags = todoTitleTV.paintFlags or STRIKE_THRU_TEXT_FLAG.inv()
+            todoTitleTV.paintFlags = STRIKE_THRU_TEXT_FLAG.inv()
         }
     }
 
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
-        var currentItem = todos[position]
+        val currentItem = allTodos[position]
         holder.itemView.apply {
             todoTitleTV.text = currentItem.title
             doneCb.isChecked = currentItem.isChecked
@@ -56,7 +56,7 @@ class TodoAdapter(
     }
 
     override fun getItemCount(): Int {
-        return todos.size
+        return allTodos.size
     }
 
 }
